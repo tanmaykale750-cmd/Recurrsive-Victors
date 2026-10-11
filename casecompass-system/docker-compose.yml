@@ -1,0 +1,36 @@
+# docker compose up --build   ->   http://localhost:8000  (create an account on first visit)
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: casecompass
+      POSTGRES_PASSWORD: casecompass
+      POSTGRES_DB: casecompass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U casecompass"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg://casecompass:casecompass@db:5432/casecompass
+      JWT_SECRET: ${JWT_SECRET:-change-me-to-a-long-random-string-in-production}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      GROQ_MODEL: ${GROQ_MODEL:-llama-3.3-70b-versatile}
+    ports:
+      - "8000:8000"
+    volumes:
+      - uploads:/app/backend/storage
+      - ocrmodels:/app/models   # PaddleOCR models (baked into the image; kept here across rebuilds)
+
+volumes:
+  pgdata:
+  uploads:
+  ocrmodels:

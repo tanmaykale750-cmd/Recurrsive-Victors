@@ -1,0 +1,23 @@
+fastapi==0.143.0
+uvicorn[standard]==0.53.0
+SQLAlchemy==2.1.4
+psycopg[binary]==3.3.6
+pydantic-settings==2.15.0
+email-validator==2.3.0
+PyJWT==2.14.0
+bcrypt==5.0.0
+python-multipart==0.0.32
+httpx==0.28.1
+# document parsing: PyMuPDF for PDFs, PaddleOCR for scans and photos
+pymupdf==1.28.2
+paddleocr==3.7.0
+# 3.2.2, not 3.3.x: Paddle 3.3.0/3.3.1 fail on CPU with oneDNN ("ConvertPirAttribute2RuntimeAttribute
+# not support"), see github.com/PaddlePaddle/Paddle/issues/77340. Wheels: Python 3.9-3.13 on
+# Linux x86_64/aarch64, Windows x64 and Apple-silicon macOS.
+paddlepaddle==3.2.2
+pillow==12.3.0
+python-docx==1.2.0
+# exports
+reportlab==5.0.1
+# tests
+pytest==8.4.2
