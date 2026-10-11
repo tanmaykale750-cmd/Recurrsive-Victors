@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # CaseCompass
 
 **Legal case timeline and action organizer** (P-02, Domain 6: Public Systems & Civic Technology).
@@ -103,3 +104,6 @@ All demo data lives in `src/data/caseData.js`, and all case-state changes go thr
 - Every correction needs a reason, is logged with a name and time, and can be reopened.
 - The calendar and reminders only ever show verified dates.
 - No outcome predictions or legal advice anywhere in the interface or exports.
+=======
+# Recurrsive-Victors
+>>>>>>> cd260bfc27d23aa51294ed4d67bc456e64676eef
