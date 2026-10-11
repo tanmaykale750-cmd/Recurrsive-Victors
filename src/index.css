@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+/* =========================================================
+   CaseCompass design tokens
+   Raw values live on :root / [data-theme="dark"]; Tailwind
+   utilities read them through @theme inline, so every class
+   (bg-surface, text-ink-2, border-line, text-danger …) flips
+   automatically with the theme.
+   ========================================================= */
+
+:root {
+  --canvas: #f7f8fa;      /* app background            */
+  --surface: #ffffff;     /* cards, sidebar, drawers   */
+  --surface-2: #f1f3f6;   /* hover, selected, inputs   */
+  --line: #e4e7ec;        /* 1px borders               */
+  --line-strong: #d3d8e0;
+  --ink: #111827;         /* primary text              */
+  --ink-2: #4b5563;       /* secondary text            */
+  --ink-3: #5e6a7d;       /* meta, captions (AA-adjusted from #8a93a3) */
+
+  --primary: #2b4c7e;
+  --primary-hover: #233f69;
+  --primary-soft: #eaf0f8;
+  --on-primary: #ffffff;
+
+  --danger: #b83232;    /* AA-adjusted from #c53b3b */
+  --warning: #8a5b00;   /* AA-adjusted from #b7791f */
+  --success: #25734a;   /* AA-adjusted from #2f855a */
+  --quarantine: #6b5bc4;
+  --brass: #a3824f;
+
+  --overlay: rgba(17, 24, 39, 0.32);
+  --shadow-float: 0 12px 32px -8px rgba(17, 24, 39, 0.18), 0 2px 6px rgba(17, 24, 39, 0.06);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --canvas: #0e1116;
+  --surface: #161a21;
+  --surface-2: #1d222b;
+  --line: #272d38;
+  --line-strong: #353c49;
+  --ink: #e6e8ec;
+  --ink-2: #a3aab8;
+  --ink-3: #8b93a2;   /* AA-adjusted from #6b7382 */
+
+  --primary: #7fa3e0;
+  --primary-hover: #97b5e8;
+  --primary-soft: #1e2a3d;
+  --on-primary: #0e1116;
+
+  --danger: #f07b7b;
+  --warning: #e8b04b;
+  --success: #5fc48e;
+  --quarantine: #a99bf0;
+  --brass: #c9a774;
+
+  --overlay: rgba(0, 0, 0, 0.55);
+  --shadow-float: 0 16px 40px -8px rgba(0, 0, 0, 0.6), 0 2px 6px rgba(0, 0, 0, 0.4);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+  --color-on-primary: var(--on-primary);
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+  --color-success: var(--success);
+  --color-quarantine: var(--quarantine);
+  --color-brass: var(--brass);
+
+  /* ~10% tints for icon chips and banners, computed against the surface */
+  --color-danger-soft: color-mix(in srgb, var(--danger) 11%, var(--surface));
+  --color-warning-soft: color-mix(in srgb, var(--warning) 12%, var(--surface));
+  --color-success-soft: color-mix(in srgb, var(--success) 11%, var(--surface));
+  --color-quarantine-soft: color-mix(in srgb, var(--quarantine) 11%, var(--surface));
+  --color-brass-soft: color-mix(in srgb, var(--brass) 14%, var(--surface));
+
+  --shadow-float: var(--shadow-float);
+  --radius-card: 10px;
+}
+
+@theme {
+  --animate-page-in: page-in 0.22s ease-out both;
+  --animate-fade: fade 0.18s ease-out both;
+  --animate-pulse-ring: pulse-ring 2s ease-out infinite;
+  --animate-shake: shake 0.3s ease;
+
+  @keyframes page-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pulse-ring { from { transform: scale(0.8); opacity: 0.7; } to { transform: scale(2.1); opacity: 0; } }
+  @keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+}
+
+/* Colour carried by a per-element --c variable (set from KIND_COLOR) */
+@utility text-c { color: var(--c); }
+@utility bg-c { background-color: var(--c); }
+@utility border-c { border-color: var(--c); }
+@utility bg-c-soft { background-color: color-mix(in srgb, var(--c) 11%, var(--surface)); }
+@utility tabular { font-variant-numeric: tabular-nums; }
+
+@layer base {
+  html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  body { @apply bg-canvas font-sans text-[14px] leading-[1.5] text-ink; font-feature-settings: "cv11", "ss01"; }
+  h1, h2, h3, h4 { @apply font-sans font-semibold tracking-[-0.01em] text-ink; line-height: 1.25; }
+  :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 6px; }
+  button { cursor: pointer; }
+  button:disabled { cursor: not-allowed; }
+  ::selection { background: color-mix(in srgb, var(--primary) 22%, transparent); }
+  input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: pointer; }
+  :root[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
+  * { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+}
+
+@layer components {
+  .card { @apply rounded-[10px] border border-line bg-surface; }
+  .field {
+    @apply h-9 w-full rounded-lg border border-line bg-surface px-3 text-[13px] text-ink outline-none transition-colors placeholder:text-ink-3;
+  }
+  .field:focus { border-color: var(--primary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent); }
+  .label { @apply text-[12px] font-medium text-ink-2; }
+  .eyebrow { @apply text-[11px] font-semibold tracking-[0.06em] text-ink-3 uppercase; }
+
+  /* legal-term highlight (JargonTerm) */
+  .term {
+    text-decoration: underline dotted;
+    text-decoration-color: color-mix(in srgb, var(--primary) 70%, transparent);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1.5px;
+    cursor: help;
+    border-radius: 2px;
+  }
+  .term:hover, .term:focus-visible { background: var(--primary-soft); }
+
+  /* date inside a quoted source sentence */
+  .qdate { @apply rounded-[3px] px-0.5 font-semibold; background: color-mix(in srgb, var(--warning) 18%, transparent); color: var(--ink); }
+
+  /* report paper preview: always paper-white */
+  .paper { color: #111; background: #fff; }
+  .paper table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .paper th { background: #1f3a5f; color: #fff; font-family: var(--font-sans); font-size: 11px; font-weight: 600; text-align: left; padding: 7px 8px; }
+  .paper td { border: 1px solid #cfd4dc; padding: 6px 8px; vertical-align: top; }
+  .paper tbody tr:nth-child(even) td { background: #fafbfc; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+/* Print only the chronology paper on the report page */
+@media print {
+  body * { visibility: hidden; }
+  #paper, #paper * { visibility: visible; }
+  #paper { position: absolute; inset: 0 auto auto 0; width: 100%; min-width: 0; box-shadow: none; padding: 0; }
+}
